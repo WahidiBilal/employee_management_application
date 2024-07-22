@@ -139,6 +139,8 @@
 							com.example.employee_management_application.controller.*</param>							
 							<param>
 							com.example.employee_management_application.service.*</param>
+							<param>
+							com.example.employee_management_application.exception.*</param>
 					</targetClasses>
 					<targetTests>
 						<param>
@@ -146,6 +148,8 @@
 							
 							<param>
 							com.example.employee_management_application.service.*</param>
+							<param>
+							com.example.employee_management_application.exception.*</param>
 					</targetTests>
 
 					<mutators>

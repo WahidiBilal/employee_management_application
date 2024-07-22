@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.employee_management_application.dao.DepartmentRepository;
 import com.example.employee_management_application.dao.EmployeeRepository;
 import com.example.employee_management_application.dto.EmployeeDTO;
+import com.example.employee_management_application.exception.CustomCreateException;
 import com.example.employee_management_application.model.Department;
 import com.example.employee_management_application.model.Employee;
 
@@ -37,14 +38,15 @@ public class EmployeeService {
 	            employeeDTO.getEsalary(),
 	            department
 	    );
+	    
+	    
+	    try {
+            Employee savedEmployee = employeeRepository.save(employee);
+            return EmployeeDTO.fromEntity(savedEmployee);
+        } catch (Exception e) {
+            throw new CustomCreateException("Failed to create employee", e);
+        }
 
-	    Employee savedEmployee = employeeRepository.save(employee);
-
-	    if (savedEmployee == null) {
-	        throw new RuntimeException("Failed to create employee");
-	    }
-
-	    return EmployeeDTO.fromEntity(savedEmployee);
 	}
 
 }
