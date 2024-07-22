@@ -4,11 +4,6 @@ public class CustomCreateException extends RuntimeException
 {
     private static final long serialVersionUID = 1L; 
 
-    public CustomCreateException(String message) 
-    {
-        super(message);
-    }
-    
     
     public CustomCreateException(String message, Throwable cause) {
         super(message, cause);
