@@ -48,4 +48,13 @@ public class Department {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
+
+	public Department(Integer did, String dname, List<Employee> employees) {
+		
+		this.did = did;
+		this.dname = dname;
+		this.employees = employees;
+	}
+	
+	
 }

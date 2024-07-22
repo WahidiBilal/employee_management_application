@@ -2,10 +2,12 @@ package com.example.employee_management_application.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.employee_management_application.dto.EmployeeDTO;
 import com.example.employee_management_application.service.EmployeeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -60,5 +63,30 @@ class EmployeeControllerTest {
 				.andExpect(jsonPath("$[1].eid", is(2))).andExpect(jsonPath("$[1].ename", is("employee2")));
 		// Verify
 		verify(employeeService, times(1)).getAllEmployees();
+	}
+
+	@Test
+	void testCreateEmployee() throws Exception {
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setEname("employee1");
+		employeeDTO.setEage(30);
+		employeeDTO.setEmail("employee1@example.com");
+		employeeDTO.setEsalary(50000.0);
+		employeeDTO.setDepartmentId(1);
+
+		EmployeeDTO createdEmployee = new EmployeeDTO();
+		createdEmployee.setEid(1);
+		createdEmployee.setEname("employee1");
+		// When
+		when(employeeService.createEmployee(any(EmployeeDTO.class))).thenReturn(createdEmployee);
+
+		// Then
+		mockMvc.perform(post("/api/employees/create").contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(employeeDTO))).andExpect(status().isCreated())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.eid", is(1)))
+				.andExpect(jsonPath("$.ename", is("employee1")));
+		// Verify
+		verify(employeeService, times(1)).createEmployee(any(EmployeeDTO.class));
 	}
 }

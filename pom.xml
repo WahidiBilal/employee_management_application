@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.3.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -91,7 +91,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -118,7 +118,54 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.6.4</version>
+				<executions>
+					<execution>
+						<id>pit-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>mutationCoverage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<targetClasses>
+						<param>
+							com.example.employee_management_application.controller.*</param>							
+							<param>
+							com.example.employee_management_application.service.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>
+							com.example.employee_management_application.controller.*</param>
+							
+							<param>
+							com.example.employee_management_application.service.*</param>
+					</targetTests>
+
+					<mutators>
+						<mutator>DEFAULTS</mutator>
+					</mutators>
+					<mutationThreshold>100</mutationThreshold>
+					<outputFormats>
+						<outputFormat>XML</outputFormat>
+						<outputFormat>HTML</outputFormat>
+					</outputFormats>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.12</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 		</plugins>
 	</build>
 

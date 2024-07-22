@@ -1,24 +1,50 @@
 package com.example.employee_management_application.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.example.employee_management_application.dao.DepartmentRepository;
 import com.example.employee_management_application.dao.EmployeeRepository;
 import com.example.employee_management_application.dto.EmployeeDTO;
+import com.example.employee_management_application.model.Department;
+import com.example.employee_management_application.model.Employee;
 
 @Service
 public class EmployeeService {
 
 	private final EmployeeRepository employeeRepository;
-
-	public EmployeeService(EmployeeRepository employeeRepository) {
+	
+	private final DepartmentRepository departmentRepository;
+	
+	public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository) {
 		this.employeeRepository = employeeRepository;
+		this.departmentRepository = departmentRepository;
 	}
 
 	public List<EmployeeDTO> getAllEmployees() {
-		return employeeRepository.findAll().stream().map(EmployeeDTO::fromEntity).collect(Collectors.toList());
+		return employeeRepository.findAll().stream().map(EmployeeDTO::fromEntity).toList();
+	}
+
+	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+	    Department department = departmentRepository.findById(employeeDTO.getDepartmentId())
+	            .orElseThrow(() -> new RuntimeException("Department not found"));
+
+	    Employee employee = new Employee(
+	            employeeDTO.getEname(),
+	            employeeDTO.getEage(),
+	            employeeDTO.getEmail(),
+	            employeeDTO.getEsalary(),
+	            department
+	    );
+
+	    Employee savedEmployee = employeeRepository.save(employee);
+
+	    if (savedEmployee == null) {
+	        throw new RuntimeException("Failed to create employee");
+	    }
+
+	    return EmployeeDTO.fromEntity(savedEmployee);
 	}
 
 }
