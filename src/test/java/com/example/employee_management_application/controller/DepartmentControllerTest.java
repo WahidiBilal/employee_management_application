@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DepartmentControllerTest {
+class DepartmentControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -68,7 +68,7 @@ public class DepartmentControllerTest {
 	}
 
 	@Test
-	public void testCreateDepartment() throws Exception {
+	void testCreateDepartment() throws Exception {
 		// Given
 		DepartmentDTO departmentDTO = new DepartmentDTO();
 		departmentDTO.setDname("IT");
