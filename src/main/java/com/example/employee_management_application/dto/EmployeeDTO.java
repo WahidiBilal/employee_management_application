@@ -9,6 +9,16 @@ public class EmployeeDTO {
 	private String email;
 	private Double esalary;
 	private Integer departmentId;
+	
+	public EmployeeDTO() {
+    }
+	
+	public EmployeeDTO(String ename, Integer eage, String email, Double esalary) {
+		this.ename = ename;
+		this.eage = eage;
+		this.email = email;
+		this.esalary = esalary;
+	}
 
 	// Getters and Setters
 

@@ -15,9 +15,9 @@ import com.example.employee_management_application.model.Employee;
 public class EmployeeService {
 
 	private final EmployeeRepository employeeRepository;
-	
+
 	private final DepartmentRepository departmentRepository;
-	
+
 	public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository) {
 		this.employeeRepository = employeeRepository;
 		this.departmentRepository = departmentRepository;
@@ -28,24 +28,18 @@ public class EmployeeService {
 	}
 
 	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-	    Department department = departmentRepository.findById(employeeDTO.getDepartmentId())
-	            .orElseThrow(() -> new RuntimeException("Department not found"));
+		Department department = departmentRepository.findById(employeeDTO.getDepartmentId())
+				.orElseThrow(() -> new RuntimeException("Department not found"));
 
-	    Employee employee = new Employee(
-	            employeeDTO.getEname(),
-	            employeeDTO.getEage(),
-	            employeeDTO.getEmail(),
-	            employeeDTO.getEsalary(),
-	            department
-	    );
-	    
-	    
-	    try {
-            Employee savedEmployee = employeeRepository.save(employee);
-            return EmployeeDTO.fromEntity(savedEmployee);
-        } catch (Exception e) {
-            throw new CustomCreateException("Failed to create employee", e);
-        }
+		Employee employee = new Employee(employeeDTO.getEname(), employeeDTO.getEage(), employeeDTO.getEmail(),
+				employeeDTO.getEsalary(), department);
+
+		try {
+			Employee savedEmployee = employeeRepository.save(employee);
+			return EmployeeDTO.fromEntity(savedEmployee);
+		} catch (Exception e) {
+			throw new CustomCreateException("Failed to create employee", e);
+		}
 
 	}
 

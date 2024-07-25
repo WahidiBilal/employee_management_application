@@ -49,12 +49,12 @@ public class Department {
 		this.employees = employees;
 	}
 
-	public Department(Integer did, String dname, List<Employee> employees) {
-		
-		this.did = did;
-		this.dname = dname;
-		this.employees = employees;
-	}
+	public Department(String dname, List<Employee> employees) {
+        this.dname = dname;
+        this.employees = employees;
+    }
 	
-	
+	 public Department(String dname) {
+	        this.dname = dname;
+	    }
 }

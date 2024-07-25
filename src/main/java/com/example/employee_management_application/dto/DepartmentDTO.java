@@ -2,6 +2,8 @@ package com.example.employee_management_application.dto;
 
 import java.util.List;
 
+import com.example.employee_management_application.model.Department;
+
 public class DepartmentDTO {
 	private Integer did;
 	private String dname;
@@ -32,4 +34,15 @@ public class DepartmentDTO {
 	public void setEmployees(List<EmployeeDTO> employees) {
 		this.employees = employees;
 	}
+	
+	
+	 public static DepartmentDTO fromEntity(Department department) {
+	        DepartmentDTO departmentDTO = new DepartmentDTO();
+	        departmentDTO.setDid(department.getDid());
+	        departmentDTO.setDname(department.getDname());
+	        departmentDTO.setEmployees(
+	            department.getEmployees().stream()
+	                .map(EmployeeDTO::fromEntity).toList());
+	        return departmentDTO;
+	    }
 }
