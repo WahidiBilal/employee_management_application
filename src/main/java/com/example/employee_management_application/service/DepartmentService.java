@@ -16,6 +16,8 @@ import com.example.employee_management_application.exception.CustomCreateExcepti
 @Service
 public class DepartmentService {
 
+	private static final String DEPARTMENT_NOT_FOUND_MESSAGE = "Department not found with id: ";
+	
 	private final DepartmentRepository departmentRepository;
 
 	public DepartmentService(DepartmentRepository departmentRepository) {
@@ -43,13 +45,13 @@ public class DepartmentService {
 
 	public DepartmentDTO getDepartmentById(Integer did) {
 		Department department = departmentRepository.findById(did)
-				.orElseThrow(() -> new CustomCreateException("Department not found with id: " + did));
+				.orElseThrow(() -> new CustomCreateException(DEPARTMENT_NOT_FOUND_MESSAGE + did));
 		return DepartmentDTO.fromEntity(department);
 	}
 
 	public DepartmentDTO updateDepartment(Integer did, DepartmentDTO departmentDTO) {
 		Department existingDepartment = departmentRepository.findById(did)
-				.orElseThrow(() -> new CustomCreateException("Department not found with id: " + did));
+				.orElseThrow(() -> new CustomCreateException(DEPARTMENT_NOT_FOUND_MESSAGE + did));
 
 		existingDepartment.setDname(departmentDTO.getDname());
 
@@ -65,7 +67,7 @@ public class DepartmentService {
 	@Transactional
 	public void deleteDepartment(Integer did) {
 		if (!departmentRepository.existsById(did)) {
-			throw new CustomCreateException("Department not found with id: " + did);
+			throw new CustomCreateException(DEPARTMENT_NOT_FOUND_MESSAGE + did);
 		}
 		departmentRepository.deleteById(did);
 	}
