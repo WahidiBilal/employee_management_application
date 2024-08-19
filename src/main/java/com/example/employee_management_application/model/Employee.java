@@ -22,7 +22,7 @@ public class Employee {
 	private Double esalary;
 
 	@ManyToOne
-	@JoinColumn(name = "did", nullable = false)
+	@JoinColumn(name = "did")
 	private Department department;
 
 	// Getters and Setters
@@ -74,13 +74,19 @@ public class Employee {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
-	
-	
-	 public Employee(String ename, Integer eage, String email, Double esalary, Department department) {
-	        this.ename = ename;
-	        this.eage = eage;
-	        this.email = email;
-	        this.esalary = esalary;
-	        this.department = department;
-	    }
+
+	public Employee() {
+
+	}
+
+	public Employee(String ename, Integer eage, String email, Double esalary, Department department) {
+		this.ename = ename;
+		this.eage = eage;
+		this.email = email;
+		this.esalary = esalary;
+		this.department = department;
+	}
+
+
+
 }

@@ -3,11 +3,14 @@ package com.example.employee_management_application.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -86,6 +89,69 @@ class DepartmentControllerTest {
 				.andExpect(jsonPath("$.dname", is("IT")));
 		// Verify
 		verify(departmentService, times(1)).createDepartment(any(DepartmentDTO.class));
+	}
+
+	@Test
+	void testGetDepartmentById_Success() throws Exception {
+		// Given
+		DepartmentDTO departmentDTO = new DepartmentDTO();
+		departmentDTO.setDid(1);
+		departmentDTO.setDname("IT");
+
+		// When
+		when(departmentService.getDepartmentById(1)).thenReturn(departmentDTO);
+
+		// Then
+		mockMvc.perform(get("/api/departments/1")).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.did", is(1)))
+				.andExpect(jsonPath("$.dname", is("IT")));
+
+		// Verify
+		verify(departmentService, times(1)).getDepartmentById(1);
+	}
+
+	@Test
+	void testGetDepartmentById_NotFound() throws Exception {
+		// When
+		when(departmentService.getDepartmentById(anyInt())).thenReturn(null);
+
+		// Then
+		mockMvc.perform(get("/api/departments/1")).andExpect(status().isNotFound());
+
+		// Verify
+		verify(departmentService, times(1)).getDepartmentById(1);
+	}
+
+	@Test
+	void testUpdateDepartment() throws Exception {
+		// Given
+		DepartmentDTO departmentDTO = new DepartmentDTO();
+		departmentDTO.setDname("IT");
+
+		DepartmentDTO updatedDepartment = new DepartmentDTO();
+		updatedDepartment.setDid(1);
+		updatedDepartment.setDname("HR");
+
+		// When
+		when(departmentService.updateDepartment(anyInt(), any(DepartmentDTO.class))).thenReturn(updatedDepartment);
+
+		// Then
+		mockMvc.perform(put("/api/departments/1").contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(departmentDTO))).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.did", is(1)))
+				.andExpect(jsonPath("$.dname", is("HR")));
+
+		// Verify
+		verify(departmentService, times(1)).updateDepartment(anyInt(), any(DepartmentDTO.class));
+	}
+
+	@Test
+	void testDeleteDepartment() throws Exception {
+		// When
+		mockMvc.perform(delete("/api/departments/1")).andExpect(status().isNoContent());
+
+		// Verify
+		verify(departmentService, times(1)).deleteDepartment(1);
 	}
 
 }

@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -82,11 +83,55 @@ class EmployeeControllerTest {
 		when(employeeService.createEmployee(any(EmployeeDTO.class))).thenReturn(createdEmployee);
 
 		// Then
-		mockMvc.perform(post("/api/employees/create").contentType(MediaType.APPLICATION_JSON)
-				.content(new ObjectMapper().writeValueAsString(employeeDTO))).andExpect(status().isCreated())
+		mockMvc.perform(post("/api/employees/create")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(employeeDTO)))
+				.andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.eid", is(1)))
 				.andExpect(jsonPath("$.ename", is("employee1")));
 		// Verify
 		verify(employeeService, times(1)).createEmployee(any(EmployeeDTO.class));
 	}
+	
+	@Test
+    void testGetEmployeeById() throws Exception {
+        // Given
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEid(1);
+        employeeDTO.setEname("employee1");
+
+        // When
+        when(employeeService.getEmployeeById(1)).thenReturn(employeeDTO);
+
+        // Then
+        mockMvc.perform(get("/api/employees/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.eid", is(1)))
+                .andExpect(jsonPath("$.ename", is("employee1")));
+        // Verify
+        verify(employeeService, times(1)).getEmployeeById(1);
+    }
+	
+	@Test
+	void testGetEmployeeById_NotFound() throws Exception {
+	    // Given
+	    // When
+	    when(employeeService.getEmployeeById(1)).thenReturn(null);
+
+	    // Then
+	    mockMvc.perform(get("/api/employees/1"))
+	            .andExpect(status().isNotFound());
+	    // Verify
+	    verify(employeeService, times(1)).getEmployeeById(1);
+	}
+
+	@Test
+    void testDeleteEmployee() throws Exception {
+        // When
+        mockMvc.perform(delete("/api/employees/1"))
+                .andExpect(status().isNoContent());
+        // Verify
+        verify(employeeService, times(1)).deleteEmployee(1);
+    }
 }

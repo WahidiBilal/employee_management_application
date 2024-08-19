@@ -8,4 +8,9 @@ public class CustomCreateException extends RuntimeException
     public CustomCreateException(String message, Throwable cause) {
         super(message, cause);
     }
+    
+    
+    public CustomCreateException(String message) {
+        super(message);
+    }
 }

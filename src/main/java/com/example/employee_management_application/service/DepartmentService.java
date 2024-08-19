@@ -8,6 +8,9 @@ import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.dto.EmployeeDTO;
 import com.example.employee_management_application.model.Department;
 import com.example.employee_management_application.model.Employee;
+
+import jakarta.transaction.Transactional;
+
 import com.example.employee_management_application.exception.CustomCreateException;
 
 @Service
@@ -36,6 +39,35 @@ public class DepartmentService {
 		} catch (Exception e) {
 			throw new CustomCreateException("Failed to create department", e);
 		}
+	}
+
+	public DepartmentDTO getDepartmentById(Integer did) {
+		Department department = departmentRepository.findById(did)
+				.orElseThrow(() -> new CustomCreateException("Department not found with id: " + did));
+		return DepartmentDTO.fromEntity(department);
+	}
+
+	public DepartmentDTO updateDepartment(Integer did, DepartmentDTO departmentDTO) {
+		Department existingDepartment = departmentRepository.findById(did)
+				.orElseThrow(() -> new CustomCreateException("Department not found with id: " + did));
+
+		existingDepartment.setDname(departmentDTO.getDname());
+
+		List<Employee> employees = departmentDTO.getEmployees().stream().map(this::convertEmployeeDTOToEntity).toList();
+
+		existingDepartment.setEmployees(employees);
+		employees.forEach(employee -> employee.setDepartment(existingDepartment));
+
+		Department updatedDepartment = departmentRepository.save(existingDepartment);
+		return DepartmentDTO.fromEntity(updatedDepartment);
+	}
+
+	@Transactional
+	public void deleteDepartment(Integer did) {
+		if (!departmentRepository.existsById(did)) {
+			throw new CustomCreateException("Department not found with id: " + did);
+		}
+		departmentRepository.deleteById(did);
 	}
 
 	private Employee convertEmployeeDTOToEntity(EmployeeDTO employeeDTO) {

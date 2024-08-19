@@ -29,7 +29,7 @@ public class EmployeeService {
 
 	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 		Department department = departmentRepository.findById(employeeDTO.getDepartmentId())
-				.orElseThrow(() -> new RuntimeException("Department not found"));
+				.orElseThrow(() -> new CustomCreateException("Department not found"));
 
 		Employee employee = new Employee(employeeDTO.getEname(), employeeDTO.getEage(), employeeDTO.getEmail(),
 				employeeDTO.getEsalary(), department);
@@ -41,6 +41,21 @@ public class EmployeeService {
 			throw new CustomCreateException("Failed to create employee", e);
 		}
 
+	}
+
+	public EmployeeDTO getEmployeeById(Integer eid) {
+		Employee employee = employeeRepository.findById(eid)
+				.orElseThrow(() -> new CustomCreateException("Employee not found with id: " + eid));
+		return EmployeeDTO.fromEntity(employee);
+	}
+
+	
+
+	public void deleteEmployee(Integer eid) {
+		if (!employeeRepository.existsById(eid)) {
+			throw new CustomCreateException("Employee not found");
+		}
+		employeeRepository.deleteById(eid);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.example.employee_management_application.dto;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.example.employee_management_application.model.Department;
@@ -7,7 +8,7 @@ import com.example.employee_management_application.model.Department;
 public class DepartmentDTO {
 	private Integer did;
 	private String dname;
-	private List<EmployeeDTO> employees;
+	private List<EmployeeDTO> employees = Collections.emptyList();
 
 	// Getters and Setters
 
