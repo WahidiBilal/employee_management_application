@@ -33,19 +33,19 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml -Pjacoco,mutation-testing
 
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository 
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     - name: Cache SonarCloud packages
       uses: actions/cache@v3
       with:
         path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
+        key: ${{ runner.os }}-sonar-${{ hashFiles('**/pom.xml') }} 
         restore-keys: ${{ runner.os }}-sonar
-
-    - name: Cache Maven packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
 
     - name: SonarCloud Analysis
       env:
