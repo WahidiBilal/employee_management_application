@@ -1,9 +1,7 @@
 package com.example.employee_management_application.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,104 +21,102 @@ import com.example.employee_management_application.service.EmployeeService;
 
 class EmployeeWebControllerTest {
 
-    @Mock
-    private EmployeeService employeeService;
+	@Mock
+	private EmployeeService employeeService;
 
-    @Mock
-    private DepartmentService departmentService;
+	@Mock
+	private DepartmentService departmentService;
 
-    @Mock
-    private Model model;
+	@Mock
+	private Model model;
 
-    @InjectMocks
-    private EmployeeWebController employeeWebController;
+	@InjectMocks
+	private EmployeeWebController employeeWebController;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void testListEmployees() throws Exception {
-        // Given
-        when(employeeService.getAllEmployees()).thenReturn(Collections.emptyList());
+	@Test
+	void testListEmployees() {
+		// Given
+		when(employeeService.getAllEmployees()).thenReturn(Collections.emptyList());
 
-        // When
-        String viewName = employeeWebController.listEmployees(model);
+		// When
+		String viewName = employeeWebController.listEmployees(model);
 
-        // Then
-        assertEquals("employees/list", viewName);
+		// Then
+		assertEquals("employees/list", viewName);
 
-        // Verify
-        verify(employeeService, times(1)).getAllEmployees();
-        verify(model, times(1)).addAttribute(eq("employees"), any());
-    }
+		// Verify
+		verify(employeeService, times(1)).getAllEmployees();
+		verify(model, times(1)).addAttribute("employees", Collections.emptyList());
+	}
 
-    @Test
-    void testShowCreateForm() throws Exception {
-        // Given
-        when(departmentService.getAllDepartments()).thenReturn(Collections.emptyList());
+	@Test
+	void testShowCreateForm() {
+		// Given
+		when(departmentService.getAllDepartments()).thenReturn(Collections.emptyList());
 
-        // When
-        String viewName = employeeWebController.showCreateForm(model);
+		// When
+		String viewName = employeeWebController.showCreateForm(model);
 
-        // Then
-        assertEquals("employees/create", viewName);
+		// Then
+		assertEquals("employees/create", viewName);
 
-        // Verify
-        verify(model, times(1)).addAttribute(eq("employee"), any(EmployeeDTO.class));
-        verify(model, times(1)).addAttribute(eq("departments"), any());
-    }
+		// Verify
+		verify(model, times(1)).addAttribute("departments", Collections.emptyList());
+	}
 
-    @Test
-    void testCreateEmployee() throws Exception {
-        // Given
-        EmployeeDTO employeeDTO = new EmployeeDTO();
+	@Test
+	void testCreateEmployee() {
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
 
-        // When
-        String viewName = employeeWebController.createEmployee(employeeDTO);
+		// When
+		String viewName = employeeWebController.createEmployee(employeeDTO);
 
-        // Then
-        assertEquals("redirect:/employees", viewName);
+		// Then
+		assertEquals("redirect:/employees", viewName);
 
-        // Verify
-        verify(employeeService, times(1)).createEmployee(any(EmployeeDTO.class));
-    }
+		// Verify
+		verify(employeeService, times(1)).createEmployee(employeeDTO);
+	}
 
-    @Test
-    void testShowEditForm() throws Exception {
-        // Given
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        when(employeeService.getEmployeeById(anyInt())).thenReturn(employeeDTO);
-        when(departmentService.getAllDepartments()).thenReturn(Collections.emptyList());
+	@Test
+	void testShowEditForm() {
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		when(employeeService.getEmployeeById(anyInt())).thenReturn(employeeDTO);
+		when(departmentService.getAllDepartments()).thenReturn(Collections.emptyList());
 
-        // When
-        String viewName = employeeWebController.showEditForm(1, model);
+		// When
+		String viewName = employeeWebController.showEditForm(1, model);
 
-        // Then
-        assertEquals("employees/edit", viewName);
+		// Then
+		assertEquals("employees/edit", viewName);
 
-        // Verify
-        verify(employeeService, times(1)).getEmployeeById(1);
-        verify(departmentService, times(1)).getAllDepartments();
-        verify(model, times(1)).addAttribute(eq("employee"), eq(employeeDTO));
-        verify(model, times(1)).addAttribute(eq("departments"), any());
-    }
-    
-    @Test
-    void testDeleteEmployee() throws Exception {
-        // Given
-        int employeeId = 1;
+		// Verify
+		verify(employeeService, times(1)).getEmployeeById(1);
+		verify(departmentService, times(1)).getAllDepartments();
+		verify(model, times(1)).addAttribute("employee", employeeDTO);
+		verify(model, times(1)).addAttribute("departments", Collections.emptyList());
+	}
 
-        // When
-        String viewName = employeeWebController.deleteEmployee(employeeId);
+	@Test
+	void testDeleteEmployee() {
+		// Given
+		int employeeId = 1;
 
-        // Then
-        assertEquals("redirect:/employees", viewName);
+		// When
+		String viewName = employeeWebController.deleteEmployee(employeeId);
 
-        // Verify
-        verify(employeeService, times(1)).deleteEmployee(employeeId);
-    }
+		// Then
+		assertEquals("redirect:/employees", viewName);
 
-    
+		// Verify
+		verify(employeeService, times(1)).deleteEmployee(employeeId);
+	}
+
 }

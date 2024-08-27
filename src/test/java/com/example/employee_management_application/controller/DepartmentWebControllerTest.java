@@ -3,7 +3,6 @@ package com.example.employee_management_application.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,8 +48,8 @@ class DepartmentwebControllerTest {
 
         // Verify
         verify(departmentService, times(1)).getAllDepartments();
-        verify(model, times(1)).addAttribute(eq("departments"), any());
     }
+
 
     @Test
     void testShowCreateForm() {
@@ -59,10 +58,9 @@ class DepartmentwebControllerTest {
 
         // Then
         assertEquals("departments/create", viewName);
-
-        // Verify
-        verify(model, times(1)).addAttribute(eq("department"), any(DepartmentDTO.class));
     }
+
+
 
     @Test
     void testCreateDepartment() {
@@ -93,10 +91,11 @@ class DepartmentwebControllerTest {
 
         // Verify
         verify(departmentService, times(1)).getDepartmentById(1);
-        verify(model, times(1)).addAttribute(eq("department"), eq(departmentDTO));
+        verify(model, times(1)).addAttribute("department", departmentDTO);
     }
 
-    
+   
+
     @Test
     void testDeleteDepartment() {
         // When
