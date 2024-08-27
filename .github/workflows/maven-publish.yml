@@ -53,11 +53,11 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn -B test org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.projectKey=WahidiBilal_employee_management_application
 
-    - name: Coveralls Report with Coveralls Profile
-      run: |
-        mvn test coveralls:report -Pcoveralls
-          -DrepoToken=${{ secrets.COVERALLS_REPO_TOKEN }}
-          -DpullRequest=${{ github.event.pull_request.number }}
+    - name: Coveralls Report
+      run: >
+        mvn test -Pcoveralls
+        -DrepoToken=${{ secrets.COVERALLS_REPO_TOKEN }}
+        -DpullRequest=${{ github.event.pull_request.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
