@@ -1,7 +1,6 @@
 package com.example.employee_management_application.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,21 +37,27 @@ class EmployeeWebControllerTest {
 		MockitoAnnotations.openMocks(this);
 	}
 
+	
+	
 	@Test
 	void testListEmployees() {
-		// Given
-		when(employeeService.getAllEmployees()).thenReturn(Collections.emptyList());
+	    // Given
+	    EmployeeDTO employeeDTO = new EmployeeDTO();
+	    employeeDTO.setEid(1);
+	    employeeDTO.setEname("employee1");
+	    when(employeeService.getAllEmployees()).thenReturn(Collections.singletonList(employeeDTO));
 
-		// When
-		String viewName = employeeWebController.listEmployees(model);
+	    // When
+	    String viewName = employeeWebController.listEmployees(model);
 
-		// Then
-		assertEquals("employees/list", viewName);
+	    // Then
+	    assertEquals("employees/list", viewName);
 
-		// Verify
-		verify(employeeService, times(1)).getAllEmployees();
-		verify(model, times(1)).addAttribute("employees", Collections.emptyList());
+	    // Verify
+	    verify(employeeService, times(1)).getAllEmployees();
+	    verify(model, times(1)).addAttribute("employees", Collections.singletonList(employeeDTO));
 	}
+
 
 	@Test
 	void testShowCreateForm() {
@@ -69,40 +74,41 @@ class EmployeeWebControllerTest {
 		verify(model, times(1)).addAttribute("departments", Collections.emptyList());
 	}
 
+
+	
 	@Test
 	void testCreateEmployee() {
-		// Given
-		EmployeeDTO employeeDTO = new EmployeeDTO();
+	    // Given
+	    EmployeeDTO employeeDTO = new EmployeeDTO();
+	    employeeDTO.setEname("employee1");
+	    employeeDTO.setEage(30);
+	    employeeDTO.setEmail("employee1@example.com");
+	    employeeDTO.setEsalary(50000.0);
+	    employeeDTO.setDepartmentId(1);
 
-		// When
-		String viewName = employeeWebController.createEmployee(employeeDTO);
+	    EmployeeDTO savedEmployeeDTO = new EmployeeDTO();
+	    savedEmployeeDTO.setEid(1);
+	    savedEmployeeDTO.setEname("employee2");
+	    savedEmployeeDTO.setEage(30);
+	    savedEmployeeDTO.setEmail("employee2@example.com");
+	    savedEmployeeDTO.setEsalary(50000.0);
+	    savedEmployeeDTO.setDepartmentId(1);
 
-		// Then
-		assertEquals("redirect:/employees", viewName);
+	    // Mocking the service call
+	    when(employeeService.createEmployee(employeeDTO)).thenReturn(savedEmployeeDTO);
 
-		// Verify
-		verify(employeeService, times(1)).createEmployee(employeeDTO);
+	    // When
+	    String viewName = employeeWebController.createEmployee(employeeDTO);
+
+	    // Then
+	    assertEquals("redirect:/employees", viewName);
+
+	    // Verify
+	    verify(employeeService, times(1)).createEmployee(employeeDTO);
 	}
 
-	@Test
-	void testShowEditForm() {
-		// Given
-		EmployeeDTO employeeDTO = new EmployeeDTO();
-		when(employeeService.getEmployeeById(anyInt())).thenReturn(employeeDTO);
-		when(departmentService.getAllDepartments()).thenReturn(Collections.emptyList());
 
-		// When
-		String viewName = employeeWebController.showEditForm(1, model);
-
-		// Then
-		assertEquals("employees/edit", viewName);
-
-		// Verify
-		verify(employeeService, times(1)).getEmployeeById(1);
-		verify(departmentService, times(1)).getAllDepartments();
-		verify(model, times(1)).addAttribute("employee", employeeDTO);
-		verify(model, times(1)).addAttribute("departments", Collections.emptyList());
-	}
+	
 
 	@Test
 	void testDeleteEmployee() {

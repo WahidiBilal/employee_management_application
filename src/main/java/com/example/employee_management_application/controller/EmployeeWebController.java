@@ -40,14 +40,7 @@ public class EmployeeWebController
         employeeService.createEmployee(employeeDTO);
         return REDIRECT_TO_EMPLOYEES;
     }
-
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("employee", employeeService.getEmployeeById(id));
-        model.addAttribute("departments", departmentService.getAllDepartments());
-        return "employees/edit";
-    }
-
+   
    
     @PostMapping("/{id}/delete")
     public String deleteEmployee(@PathVariable Integer id) {

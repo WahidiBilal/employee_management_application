@@ -16,6 +16,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<testcontainers.version>1.18.3</testcontainers.version>
 		<sonar.organization>wahidibilal</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.exclusions>
@@ -46,7 +47,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -62,111 +62,210 @@
 			<artifactId>coveralls-maven-plugin</artifactId>
 			<version>4.3.0</version>
 		</dependency>
-	</dependencies>
+		<!-- Testcontainers -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.26</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.34.1</version>
+		</dependency>
 
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+			<scope>provided</scope>
+		</dependency>-->
+
+	</dependencies>
 	<build>
 		<plugins>
+			<!-- Unit Tests -->
+
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+
+			<!-- Pom.xml main yeh configuration karain -->
+			<!--<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-resource</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/it/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
+
+			
+
+			<!-- Integration Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<excludes>
+							<exclude>**/*IT.java</exclude>
+						</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
-					<configuration>
-						<jacocoReports>
-							<jacocoReport>
-								${project.build.directory}/jacoco-ut/jacoco.xml</jacocoReport>
-							<jacocoReport>
-								${project.build.directory}/jacoco-it/jacoco.xml</jacocoReport>
-						</jacocoReports>
-						<failOnServiceError>false</failOnServiceError>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>javax.xml.bind</groupId>
-							<artifactId>jaxb-api</artifactId>
-							<version>2.2.3</version>
-						</dependency>
-					</dependencies>
-				</plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+				<configuration>
+					<jacocoReports>
+						<jacocoReport>
+							${project.build.directory}/jacoco-ut/jacoco.xml</jacocoReport>
+						<jacocoReport>
+							${project.build.directory}/jacoco-it/jacoco.xml</jacocoReport>
+					</jacocoReports>
+					<failOnServiceError>false</failOnServiceError>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+						<version>2.2.3</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.12</version>
-					<configuration>
-						<excludes>
-							<exclude>**/EmployeeManagementApplication.*</exclude>
-							<exclude>**/model/*.*</exclude>
-							<exclude>**/dto/*.*</exclude>
-						</excludes>
-					</configuration>
-					<executions>
-						<execution>
-							<id>default-prepare-agent</id>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>default-report</id>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<configuration>
+					<excludes>
+						<exclude>**/EmployeeManagementApplication.*</exclude>
+						<exclude>**/model/*.*</exclude>
+						<exclude>**/dto/*.*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-
-				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>1.6.4</version>
-					<configuration>
-						<targetClasses>
-							<param>
-								com.example.employee_management_application.controller.*</param>
-							<param>
-								com.example.employee_management_application.service.*</param>
-							<param>
-								com.example.employee_management_application.exception.*</param>
-						</targetClasses>
-						<targetTests>
-							<param>
-								com.example.employee_management_application.controller.*</param>
-
-							<param>
-								com.example.employee_management_application.service.*</param>
-							<param>
-								com.example.employee_management_application.exception.*</param>
-						</targetTests>
-
-						<mutators>
-							<mutator>DEFAULTS</mutator>
-						</mutators>
-						<mutationThreshold>100</mutationThreshold>
-						<outputFormats>
-							<outputFormat>XML</outputFormat>
-							<outputFormat>HTML</outputFormat>
-						</outputFormats>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.pitest</groupId>
-							<artifactId>pitest-junit5-plugin</artifactId>
-							<version>0.12</version>
-						</dependency>
-					</dependencies>
-				</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.6.4</version>
+				<configuration>
+					<targetClasses>
+						<param>
+							com.example.employee_management_application.controller.*</param>
+						<param>
+							com.example.employee_management_application.service.*</param>
+						<param>
+							com.example.employee_management_application.exception.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>
+							com.example.employee_management_application.controller.*</param>
+						<param>
+							com.example.employee_management_application.service.*</param>
+						<param>
+							com.example.employee_management_application.exception.*</param>
+					</targetTests>
+					<mutators>
+						<mutator>DEFAULTS</mutator>
+					</mutators>
+					<mutationThreshold>100</mutationThreshold>
+					<outputFormats>
+						<outputFormat>XML</outputFormat>
+						<outputFormat>HTML</outputFormat>
+					</outputFormats>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.12</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			
 
 			</plugins>
 		</pluginManagement>
@@ -199,6 +298,7 @@
 				</plugins>
 			</build>
 		</profile>
+
 		<profile>
 			<id>coveralls</id>
 			<build>
@@ -222,6 +322,7 @@
 				</plugins>
 			</build>
 		</profile>
+
 		<profile>
 			<id>mutation-testing</id>
 			<build>
@@ -242,5 +343,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

@@ -36,12 +36,7 @@ public class DepartmentwebController
         departmentService.createDepartment(departmentDTO);
         return REDIRECT_TO_DEPARTMENTS;
     }
-
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("department", departmentService.getDepartmentById(id));
-        return "departments/edit";
-    }
+    
 
     @PostMapping("/{id}/delete")
     public String deleteDepartment(@PathVariable Integer id) {
