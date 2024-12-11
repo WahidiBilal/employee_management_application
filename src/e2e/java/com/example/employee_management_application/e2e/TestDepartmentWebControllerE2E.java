@@ -16,7 +16,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import com.example.employee_management_application.conn.TestContainerCon;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DepartmentWebControllerE2E extends TestContainerCon {
+class TestDepartmentWebControllerE2E extends TestContainerCon {
 	@LocalServerPort
 	private int port;
 

@@ -23,7 +23,7 @@ import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.service.DepartmentService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EmployeeWebControllerE2E extends TestContainerCon {
+class TestEmployeeWebControllerE2E extends TestContainerCon {
 
 	@LocalServerPort
 	private int port;
