@@ -36,13 +36,15 @@ class EmployeeControllerIT extends TestContainerCon {
 
 	@BeforeEach
 	void setUp() {
-		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
-		departmentService.getAllDepartments()
-				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+		deleteAllEmployeesAndDepartments();
 	}
 
 	@AfterEach
 	void tearDown() {
+		deleteAllEmployeesAndDepartments();
+	}
+
+	private void deleteAllEmployeesAndDepartments() {
 		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
 		departmentService.getAllDepartments()
 				.forEach(department -> departmentService.deleteDepartment(department.getDid()));

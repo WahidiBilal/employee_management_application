@@ -19,7 +19,7 @@ import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.service.DepartmentService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DepartmentControllerIT extends TestContainerCon {
+class DepartmentControllerIT extends TestContainerCon {
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -44,7 +44,7 @@ public class DepartmentControllerIT extends TestContainerCon {
 	}
 
 	@Test
-	public void testGetAllDepartments() {
+	void testGetAllDepartments() {
 		// Given
 		DepartmentDTO department1 = new DepartmentDTO();
 		department1.setDname("IT");
@@ -67,7 +67,7 @@ public class DepartmentControllerIT extends TestContainerCon {
 	}
 
 	@Test
-	public void testCreateDepartment() {
+	void testCreateDepartment() {
 		// Given
 		DepartmentDTO departmentDTO = new DepartmentDTO();
 		departmentDTO.setDname("IT");
@@ -89,7 +89,7 @@ public class DepartmentControllerIT extends TestContainerCon {
 	}
 
 	@Test
-	public void testGetDepartmentById_Success() {
+	void testGetDepartmentById_Success() {
 		// Given
 		DepartmentDTO departmentDTO = new DepartmentDTO();
 		departmentDTO.setDname("IT");
@@ -108,7 +108,7 @@ public class DepartmentControllerIT extends TestContainerCon {
 	}
 
 	@Test
-	public void testDeleteDepartmentById_Success() {
+	void testDeleteDepartmentById_Success() {
 		// Given
 		DepartmentDTO departmentDTO = new DepartmentDTO();
 		departmentDTO.setDname("IT");
