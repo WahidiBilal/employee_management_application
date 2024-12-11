@@ -10,7 +10,7 @@ Sonar Cloud: [![Quality Gate Status](https://sonarcloud.io/api/project_badges/me
 
 Code coverall: [![Coverage Status](https://coveralls.io/repos/github/WahidiBilal/employee_management_application/badge.svg?branch=main)](https://coveralls.io/github/WahidiBilal/employee_management_application?branch=main)
 
-GithubAction: [![Java CI with Maven](https://github.com/WahidiBilal/employee_management_application/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/WahidiBilal/employee_management_application/actions/workflows/maven-publish.yml)
+GithubAction: [![Java CI with Maven](https://github.com/WahidiBilal/employee_management_application/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/WahidiBilal/employee_management_application/actions/workflows/maven-ci.yml)
 
 <h1>Steps to Run</h1>
 
