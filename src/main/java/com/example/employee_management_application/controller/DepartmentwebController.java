@@ -8,40 +8,38 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/departments")
-public class DepartmentwebController 
-{
-	
+public class DepartmentwebController {
+
 	private final DepartmentService departmentService;
 
-    public DepartmentwebController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
-    
-    private static final String REDIRECT_TO_DEPARTMENTS = "redirect:/departments";
+	public DepartmentwebController(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
 
-    @GetMapping
-    public String listDepartments(Model model) {
-        model.addAttribute("departments", departmentService.getAllDepartments());
-        return "departments/list";
-    }
+	private static final String REDIRECT_TO_DEPARTMENTS = "redirect:/departments";
 
-    @GetMapping("/create")
-    public String showCreateForm(Model model) {
-        model.addAttribute("department", new DepartmentDTO());
-        return "departments/create";
-    }
+	@GetMapping
+	public String listDepartments(Model model) {
+		model.addAttribute("departments", departmentService.getAllDepartments());
+		return "departments/list";
+	}
 
-    @PostMapping("/create")
-    public String createDepartment(@ModelAttribute DepartmentDTO departmentDTO) {
-        departmentService.createDepartment(departmentDTO);
-        return REDIRECT_TO_DEPARTMENTS;
-    }
-    
+	@GetMapping("/create")
+	public String showCreateForm(Model model) {
+		model.addAttribute("department", new DepartmentDTO());
+		return "departments/create";
+	}
 
-    @PostMapping("/{id}/delete")
-    public String deleteDepartment(@PathVariable Integer id) {
-        departmentService.deleteDepartment(id);
-        return REDIRECT_TO_DEPARTMENTS;
-    }
+	@PostMapping("/create")
+	public String createDepartment(@ModelAttribute DepartmentDTO departmentDTO) {
+		departmentService.createDepartment(departmentDTO);
+		return REDIRECT_TO_DEPARTMENTS;
+	}
+
+	@PostMapping("/{id}/delete")
+	public String deleteDepartment(@PathVariable Integer id) {
+		departmentService.deleteDepartment(id);
+		return REDIRECT_TO_DEPARTMENTS;
+	}
 
 }

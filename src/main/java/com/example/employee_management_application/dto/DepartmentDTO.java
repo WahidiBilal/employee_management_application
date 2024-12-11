@@ -10,6 +10,14 @@ public class DepartmentDTO {
 	private String dname;
 	private List<EmployeeDTO> employees = Collections.emptyList();
 
+	public DepartmentDTO() {
+	}
+
+	public DepartmentDTO(String dname, List<EmployeeDTO> employees) {
+		this.dname = dname;
+
+	}
+
 	// Getters and Setters
 
 	public Integer getDid() {
@@ -35,15 +43,12 @@ public class DepartmentDTO {
 	public void setEmployees(List<EmployeeDTO> employees) {
 		this.employees = employees;
 	}
-	
-	
-	 public static DepartmentDTO fromEntity(Department department) {
-	        DepartmentDTO departmentDTO = new DepartmentDTO();
-	        departmentDTO.setDid(department.getDid());
-	        departmentDTO.setDname(department.getDname());
-	        departmentDTO.setEmployees(
-	            department.getEmployees().stream()
-	                .map(EmployeeDTO::fromEntity).toList());
-	        return departmentDTO;
-	    }
+
+	public static DepartmentDTO fromEntity(Department department) {
+		DepartmentDTO departmentDTO = new DepartmentDTO();
+		departmentDTO.setDid(department.getDid());
+		departmentDTO.setDname(department.getDname());
+		departmentDTO.setEmployees(department.getEmployees().stream().map(EmployeeDTO::fromEntity).toList());
+		return departmentDTO;
+	}
 }

@@ -1,23 +1,21 @@
 package com.example.employee_management_application.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.example.employee_management_application.dao.DepartmentRepository;
 import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.dto.EmployeeDTO;
+import com.example.employee_management_application.exception.CustomCreateException;
 import com.example.employee_management_application.model.Department;
 import com.example.employee_management_application.model.Employee;
-
-import jakarta.transaction.Transactional;
-
-import com.example.employee_management_application.exception.CustomCreateException;
 
 @Service
 public class DepartmentService {
 
 	private static final String DEPARTMENT_NOT_FOUND_MESSAGE = "Department not found with id: ";
-	
+
 	private final DepartmentRepository departmentRepository;
 
 	public DepartmentService(DepartmentRepository departmentRepository) {
@@ -64,7 +62,7 @@ public class DepartmentService {
 		return DepartmentDTO.fromEntity(updatedDepartment);
 	}
 
-	@Transactional
+	
 	public void deleteDepartment(Integer did) {
 		if (!departmentRepository.existsById(did)) {
 			throw new CustomCreateException(DEPARTMENT_NOT_FOUND_MESSAGE + did);

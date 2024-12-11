@@ -14,6 +14,8 @@ import com.example.employee_management_application.model.Employee;
 @Service
 public class EmployeeService {
 
+	private static final String EMPLOYEE_NOT_FOUND_MESSAGE = "Employee not found with id: ";
+
 	private final EmployeeRepository employeeRepository;
 
 	private final DepartmentRepository departmentRepository;
@@ -45,15 +47,13 @@ public class EmployeeService {
 
 	public EmployeeDTO getEmployeeById(Integer eid) {
 		Employee employee = employeeRepository.findById(eid)
-				.orElseThrow(() -> new CustomCreateException("Employee not found with id: " + eid));
+				.orElseThrow(() -> new CustomCreateException(EMPLOYEE_NOT_FOUND_MESSAGE + eid));
 		return EmployeeDTO.fromEntity(employee);
 	}
 
-	
-
 	public void deleteEmployee(Integer eid) {
 		if (!employeeRepository.existsById(eid)) {
-			throw new CustomCreateException("Employee not found");
+			throw new CustomCreateException(EMPLOYEE_NOT_FOUND_MESSAGE + eid);
 		}
 		employeeRepository.deleteById(eid);
 	}

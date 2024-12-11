@@ -178,7 +178,7 @@ class DepartmentServiceTest {
 		// Given
 		Department department = new Department("IT");
 		department.setDid(1);
-		
+
 		department.setEmployees(new ArrayList<>());
 
 		// When

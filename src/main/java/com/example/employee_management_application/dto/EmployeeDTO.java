@@ -9,10 +9,10 @@ public class EmployeeDTO {
 	private String email;
 	private Double esalary;
 	private Integer departmentId;
-	
+
 	public EmployeeDTO() {
-    }
-	
+	}
+
 	public EmployeeDTO(String ename, Integer eage, String email, Double esalary) {
 		this.ename = ename;
 		this.eage = eage;
@@ -80,5 +80,5 @@ public class EmployeeDTO {
 		employeeDTO.setDepartmentId(employee.getDepartment().getDid());
 		return employeeDTO;
 	}
-	
+
 }

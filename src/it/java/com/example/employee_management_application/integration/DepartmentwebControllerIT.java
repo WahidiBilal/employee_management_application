@@ -43,6 +43,4 @@ public class DepartmentwebControllerIT extends TestContainerCon {
 		assertThat(response.getHeaders().getLocation().toString()).endsWith("/departments");
 	}
 
-	
-
 }

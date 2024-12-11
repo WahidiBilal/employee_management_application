@@ -3,7 +3,6 @@ package com.example.employee_management_application.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +20,7 @@ public class Department {
 	private Integer did;
 
 	private String dname;
-	
-//	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "department", orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Employee> employees = new ArrayList<>();
 
 	// Getters and Setters
@@ -60,11 +57,10 @@ public class Department {
 	public Department(String dname) {
 		this.dname = dname;
 	}
-	
-	 public Department() 
-	 {
-		 
-	 }
+
+	public Department() {
+
+	}
 
 	public Department(Integer did, String dname, List<Employee> employees) {
 		super();
@@ -72,5 +68,5 @@ public class Department {
 		this.dname = dname;
 		this.employees = employees;
 	}
-	 
+
 }

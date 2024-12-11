@@ -2,8 +2,6 @@ package com.example.employee_management_application.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,20 +32,6 @@ class EmployeeWebControllerIT extends TestContainerCon {
 
 	private String getBaseUrl() {
 		return "http://localhost:" + port + "/employees";
-	}
-
-	@BeforeEach
-	void setUp() {
-		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
-		departmentService.getAllDepartments()
-				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
-	}
-
-	@AfterEach
-	void tearDown() {
-		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
-		departmentService.getAllDepartments()
-				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
 	}
 
 	@Test

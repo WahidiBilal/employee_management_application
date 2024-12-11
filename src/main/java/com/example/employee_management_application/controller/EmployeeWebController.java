@@ -9,43 +9,41 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/employees")
-public class EmployeeWebController 
-{
-	
+public class EmployeeWebController {
+
 	private final EmployeeService employeeService;
-    private final DepartmentService departmentService;
-    
-    private static final String REDIRECT_TO_EMPLOYEES = "redirect:/employees";
+	private final DepartmentService departmentService;
 
-    public EmployeeWebController(EmployeeService employeeService, DepartmentService departmentService) {
-        this.employeeService = employeeService;
-        this.departmentService = departmentService;
-    }
+	private static final String REDIRECT_TO_EMPLOYEES = "redirect:/employees";
 
-    @GetMapping
-    public String listEmployees(Model model) {
-        model.addAttribute("employees", employeeService.getAllEmployees());
-        return "employees/list";
-    }
+	public EmployeeWebController(EmployeeService employeeService, DepartmentService departmentService) {
+		this.employeeService = employeeService;
+		this.departmentService = departmentService;
+	}
 
-    @GetMapping("/create")
-    public String showCreateForm(Model model) {
-        model.addAttribute("employee", new EmployeeDTO());
-        model.addAttribute("departments", departmentService.getAllDepartments());
-        return "employees/create";
-    }
+	@GetMapping
+	public String listEmployees(Model model) {
+		model.addAttribute("employees", employeeService.getAllEmployees());
+		return "employees/list";
+	}
 
-    @PostMapping("/create")
-    public String createEmployee(@ModelAttribute EmployeeDTO employeeDTO) {
-        employeeService.createEmployee(employeeDTO);
-        return REDIRECT_TO_EMPLOYEES;
-    }
-   
-   
-    @PostMapping("/{id}/delete")
-    public String deleteEmployee(@PathVariable Integer id) {
-        employeeService.deleteEmployee(id);
-        return REDIRECT_TO_EMPLOYEES;
-    }
+	@GetMapping("/create")
+	public String showCreateForm(Model model) {
+		model.addAttribute("employee", new EmployeeDTO());
+		model.addAttribute("departments", departmentService.getAllDepartments());
+		return "employees/create";
+	}
+
+	@PostMapping("/create")
+	public String createEmployee(@ModelAttribute EmployeeDTO employeeDTO) {
+		employeeService.createEmployee(employeeDTO);
+		return REDIRECT_TO_EMPLOYEES;
+	}
+
+	@PostMapping("/{id}/delete")
+	public String deleteEmployee(@PathVariable Integer id) {
+		employeeService.deleteEmployee(id);
+		return REDIRECT_TO_EMPLOYEES;
+	}
 
 }

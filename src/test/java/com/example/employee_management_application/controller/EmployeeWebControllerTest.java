@@ -37,27 +37,24 @@ class EmployeeWebControllerTest {
 		MockitoAnnotations.openMocks(this);
 	}
 
-	
-	
 	@Test
 	void testListEmployees() {
-	    // Given
-	    EmployeeDTO employeeDTO = new EmployeeDTO();
-	    employeeDTO.setEid(1);
-	    employeeDTO.setEname("employee1");
-	    when(employeeService.getAllEmployees()).thenReturn(Collections.singletonList(employeeDTO));
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setEid(1);
+		employeeDTO.setEname("employee1");
+		when(employeeService.getAllEmployees()).thenReturn(Collections.singletonList(employeeDTO));
 
-	    // When
-	    String viewName = employeeWebController.listEmployees(model);
+		// When
+		String viewName = employeeWebController.listEmployees(model);
 
-	    // Then
-	    assertEquals("employees/list", viewName);
+		// Then
+		assertEquals("employees/list", viewName);
 
-	    // Verify
-	    verify(employeeService, times(1)).getAllEmployees();
-	    verify(model, times(1)).addAttribute("employees", Collections.singletonList(employeeDTO));
+		// Verify
+		verify(employeeService, times(1)).getAllEmployees();
+		verify(model, times(1)).addAttribute("employees", Collections.singletonList(employeeDTO));
 	}
-
 
 	@Test
 	void testShowCreateForm() {
@@ -74,41 +71,35 @@ class EmployeeWebControllerTest {
 		verify(model, times(1)).addAttribute("departments", Collections.emptyList());
 	}
 
-
-	
 	@Test
 	void testCreateEmployee() {
-	    // Given
-	    EmployeeDTO employeeDTO = new EmployeeDTO();
-	    employeeDTO.setEname("employee1");
-	    employeeDTO.setEage(30);
-	    employeeDTO.setEmail("employee1@example.com");
-	    employeeDTO.setEsalary(50000.0);
-	    employeeDTO.setDepartmentId(1);
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setEname("employee1");
+		employeeDTO.setEage(30);
+		employeeDTO.setEmail("employee1@example.com");
+		employeeDTO.setEsalary(50000.0);
+		employeeDTO.setDepartmentId(1);
 
-	    EmployeeDTO savedEmployeeDTO = new EmployeeDTO();
-	    savedEmployeeDTO.setEid(1);
-	    savedEmployeeDTO.setEname("employee2");
-	    savedEmployeeDTO.setEage(30);
-	    savedEmployeeDTO.setEmail("employee2@example.com");
-	    savedEmployeeDTO.setEsalary(50000.0);
-	    savedEmployeeDTO.setDepartmentId(1);
+		EmployeeDTO savedEmployeeDTO = new EmployeeDTO();
+		savedEmployeeDTO.setEid(1);
+		savedEmployeeDTO.setEname("employee2");
+		savedEmployeeDTO.setEage(30);
+		savedEmployeeDTO.setEmail("employee2@example.com");
+		savedEmployeeDTO.setEsalary(50000.0);
+		savedEmployeeDTO.setDepartmentId(1);
 
-	    // Mocking the service call
-	    when(employeeService.createEmployee(employeeDTO)).thenReturn(savedEmployeeDTO);
+		when(employeeService.createEmployee(employeeDTO)).thenReturn(savedEmployeeDTO);
 
-	    // When
-	    String viewName = employeeWebController.createEmployee(employeeDTO);
+		// When
+		String viewName = employeeWebController.createEmployee(employeeDTO);
 
-	    // Then
-	    assertEquals("redirect:/employees", viewName);
+		// Then
+		assertEquals("redirect:/employees", viewName);
 
-	    // Verify
-	    verify(employeeService, times(1)).createEmployee(employeeDTO);
+		// Verify
+		verify(employeeService, times(1)).createEmployee(employeeDTO);
 	}
-
-
-	
 
 	@Test
 	void testDeleteEmployee() {

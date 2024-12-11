@@ -140,6 +140,4 @@ class EmployeeControllerIT extends TestContainerCon {
 		assertThat(retrievedEmployee.getEname()).isEqualTo("employee1");
 	}
 
-	
-
 }

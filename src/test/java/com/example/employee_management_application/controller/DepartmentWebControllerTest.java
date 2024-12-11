@@ -72,7 +72,6 @@ class DepartmentwebControllerTest {
 		savedDepartmentDTO.setDid(1);
 		savedDepartmentDTO.setDname("Finance");
 
-		
 		when(departmentService.createDepartment(any(DepartmentDTO.class))).thenReturn(savedDepartmentDTO);
 
 		// When

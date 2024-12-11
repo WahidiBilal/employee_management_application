@@ -156,7 +156,7 @@ class EmployeeServiceTest {
 		Department department = new Department("IT");
 
 		when(departmentRepository.findById(1)).thenReturn(Optional.of(department));
-		when(employeeRepository.save(any(Employee.class))).thenReturn(null); 
+		when(employeeRepository.save(any(Employee.class))).thenReturn(null);
 
 		// When
 		RuntimeException exception = assertThrows(CustomCreateException.class,
@@ -167,7 +167,7 @@ class EmployeeServiceTest {
 		verify(departmentRepository, times(1)).findById(1);
 		verify(employeeRepository, times(1)).save(any(Employee.class));
 	}
-	
+
 	@Test
 	void testCreateEmployee_HandleNull() {
 		// Given
@@ -181,7 +181,6 @@ class EmployeeServiceTest {
 		Department department = new Department("IT");
 		department.setDid(1);
 
-		
 		Employee savedEmployee = new Employee();
 		savedEmployee.setEid(1);
 		savedEmployee.setEname(null);
@@ -267,12 +266,10 @@ class EmployeeServiceTest {
 
 		// When
 		RuntimeException exception = assertThrows(RuntimeException.class, () -> employeeService.deleteEmployee(1));
-		assertEquals("Employee not found", exception.getMessage());
+		assertEquals("Employee not found with id: 1", exception.getMessage());
 
 		// Verify
 		verify(employeeRepository, never()).deleteById(1);
 	}
-
-	
 
 }

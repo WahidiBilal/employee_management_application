@@ -21,8 +21,8 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.employee_management_application.dto.EmployeeDTO;
@@ -36,7 +36,7 @@ class EmployeeControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockBean
+	@MockitoBean
 	private EmployeeService employeeService;
 
 	@InjectMocks
@@ -83,55 +83,49 @@ class EmployeeControllerTest {
 		when(employeeService.createEmployee(any(EmployeeDTO.class))).thenReturn(createdEmployee);
 
 		// Then
-		mockMvc.perform(post("/api/employees/create")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(new ObjectMapper().writeValueAsString(employeeDTO)))
-				.andExpect(status().isCreated())
+		mockMvc.perform(post("/api/employees/create").contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(employeeDTO))).andExpect(status().isCreated())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.eid", is(1)))
 				.andExpect(jsonPath("$.ename", is("employee1")));
 		// Verify
 		verify(employeeService, times(1)).createEmployee(any(EmployeeDTO.class));
 	}
-	
+
 	@Test
-    void testGetEmployeeById() throws Exception {
-        // Given
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setEid(1);
-        employeeDTO.setEname("employee1");
+	void testGetEmployeeById() throws Exception {
+		// Given
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setEid(1);
+		employeeDTO.setEname("employee1");
 
-        // When
-        when(employeeService.getEmployeeById(1)).thenReturn(employeeDTO);
+		// When
+		when(employeeService.getEmployeeById(1)).thenReturn(employeeDTO);
 
-        // Then
-        mockMvc.perform(get("/api/employees/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.eid", is(1)))
-                .andExpect(jsonPath("$.ename", is("employee1")));
-        // Verify
-        verify(employeeService, times(1)).getEmployeeById(1);
-    }
-	
-	@Test
-	void testGetEmployeeById_NotFound() throws Exception {
-	    // Given
-	    // When
-	    when(employeeService.getEmployeeById(1)).thenReturn(null);
-
-	    // Then
-	    mockMvc.perform(get("/api/employees/1"))
-	            .andExpect(status().isNotFound());
-	    // Verify
-	    verify(employeeService, times(1)).getEmployeeById(1);
+		// Then
+		mockMvc.perform(get("/api/employees/1")).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.eid", is(1)))
+				.andExpect(jsonPath("$.ename", is("employee1")));
+		// Verify
+		verify(employeeService, times(1)).getEmployeeById(1);
 	}
 
 	@Test
-    void testDeleteEmployee() throws Exception {
-        // When
-        mockMvc.perform(delete("/api/employees/1"))
-                .andExpect(status().isNoContent());
-        // Verify
-        verify(employeeService, times(1)).deleteEmployee(1);
-    }
+	void testGetEmployeeById_NotFound() throws Exception {
+		// Given
+		// When
+		when(employeeService.getEmployeeById(1)).thenReturn(null);
+
+		// Then
+		mockMvc.perform(get("/api/employees/1")).andExpect(status().isNotFound());
+		// Verify
+		verify(employeeService, times(1)).getEmployeeById(1);
+	}
+
+	@Test
+	void testDeleteEmployee() throws Exception {
+		// When
+		mockMvc.perform(delete("/api/employees/1")).andExpect(status().isNoContent());
+		// Verify
+		verify(employeeService, times(1)).deleteEmployee(1);
+	}
 }

@@ -29,17 +29,19 @@ public class DepartmentControllerIT extends TestContainerCon {
 
 	@LocalServerPort
 	private int port;
-	
-	 @BeforeEach
-    public void setUp() {
-        departmentService.getAllDepartments().forEach(department -> departmentService.deleteDepartment(department.getDid()));
-    }
-	
+
+	@BeforeEach
+	public void setUp() {
+		departmentService.getAllDepartments()
+				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+	}
+
 	@AfterEach
-    public void cleanUp() {
-		
-		departmentService.getAllDepartments().forEach(department -> departmentService.deleteDepartment(department.getDid()));
-    }
+	public void cleanUp() {
+
+		departmentService.getAllDepartments()
+				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+	}
 
 	@Test
 	public void testGetAllDepartments() {
