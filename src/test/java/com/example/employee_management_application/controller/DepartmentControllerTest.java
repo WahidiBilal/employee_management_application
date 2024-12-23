@@ -21,8 +21,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,8 +30,7 @@ import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.service.DepartmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(DepartmentController.class)
 class DepartmentControllerTest {
 
 	@Autowired
