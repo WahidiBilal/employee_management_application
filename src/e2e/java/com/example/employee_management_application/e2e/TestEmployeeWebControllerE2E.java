@@ -37,7 +37,7 @@ class TestEmployeeWebControllerE2E extends TestContainerCon {
 	public void setUp() {
 
 		ChromeOptions options = new ChromeOptions();
-		//options.addArguments("--headless");
+		options.addArguments("--headless");
 		driver = new ChromeDriver(options);
 
 		departmentService.createDepartment(new DepartmentDTO("HR", null));
