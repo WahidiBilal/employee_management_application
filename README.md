@@ -17,7 +17,7 @@ GithubAction: [![Java CI with Maven](https://github.com/WahidiBilal/employee_man
 <ol>
   <li>
     <strong>Clone the Repository</strong>
-    <pre><code>git clone https://github.com/your-username/employee-management-application.git</code></pre>
+    <pre><code>git clone https://github.com/WahidiBilal/employee_management_application.git</code></pre>
   </li>
   <li>
     <strong>Start the MySQL Database using Docker Compose</strong>

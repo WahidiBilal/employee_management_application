@@ -37,7 +37,7 @@ class TestEmployeeWebControllerE2E extends TestContainerCon {
 	public void setUp() {
 
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
+		//options.addArguments("--headless");
 		driver = new ChromeDriver(options);
 
 		departmentService.createDepartment(new DepartmentDTO("HR", null));
@@ -76,5 +76,34 @@ class TestEmployeeWebControllerE2E extends TestContainerCon {
 		WebElement employeeTable = driver.findElement(By.tagName("table"));
 		assertThat(employeeTable.getText()).contains("employee1");
 	}
+	
+	@Test
+	void testDeleteEmployee() {
+		// Given
+		driver.get("http://localhost:" + port + "/employees/create");
+		driver.findElement(By.id("ename")).sendKeys("employee1");
+		driver.findElement(By.id("eage")).sendKeys("30");
+		driver.findElement(By.id("email")).sendKeys("employee1@example.com");
+		driver.findElement(By.id("esalary")).sendKeys("50000.0");
+
+		// Select department
+		WebElement departmentDropdown = driver.findElement(By.id("departmentId"));
+		departmentDropdown.sendKeys("HR");
+		driver.findElement(By.tagName("form")).submit();
+
+		// When
+		driver.get("http://localhost:" + port + "/employees");
+
+		WebElement departmentRow = driver.findElement(By.xpath("//td[text()='employee1']/.."));
+
+		WebElement deleteButton = departmentRow.findElement(By.tagName("button"));
+		deleteButton.click();
+
+		// Then
+		driver.get("http://localhost:" + port + "/employees");
+		WebElement employeeTable = driver.findElement(By.tagName("table"));
+		assertThat(employeeTable.getText()).doesNotContain("employee1");
+	}
+
 
 }
