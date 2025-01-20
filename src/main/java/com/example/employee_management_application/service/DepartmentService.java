@@ -62,7 +62,6 @@ public class DepartmentService {
 		return DepartmentDTO.fromEntity(updatedDepartment);
 	}
 
-	
 	public void deleteDepartment(Integer did) {
 		if (!departmentRepository.existsById(did)) {
 			throw new CustomCreateException(DEPARTMENT_NOT_FOUND_MESSAGE + did);
