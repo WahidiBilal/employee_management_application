@@ -2,6 +2,7 @@ package com.example.employee_management_application.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
 import com.example.employee_management_application.conn.TestContainerCon;
+import com.example.employee_management_application.dao.EmployeeRepository;
 import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.dto.EmployeeDTO;
 import com.example.employee_management_application.service.DepartmentService;
@@ -29,6 +31,18 @@ class EmployeeWebControllerIT extends TestContainerCon {
 
 	@Autowired
 	private DepartmentService departmentService;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	@AfterEach
+	public void tearDown() {
+
+		employeeRepository.deleteAll();
+
+		// Log database state before checking emptiness
+		System.out.println("Remaining Employees: " + employeeRepository.findAll());
+	}
 
 	private String getBaseUrl() {
 		return "http://localhost:" + port + "/employees";
