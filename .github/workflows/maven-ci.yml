@@ -1,12 +1,10 @@
-# This workflow builds a Java project with Maven and caches dependencies 
-# to improve workflow execution time.
-# For more information, see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
 name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - feature/*
   pull_request:
     branches: [ "main" ]
 
@@ -18,8 +16,7 @@ jobs:
       
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 
-
+          fetch-depth: 0
       
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -27,18 +24,6 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
           cache: maven
-
-      
-      - name: Start MySQL container
-        run: |
-          docker run --name mysql5 \
-            -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
-            -e MYSQL_DATABASE=employee_management_application \
-            -e MYSQL_USER=${{ secrets.MYSQL_USER }} \
-            -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
-            -p 3307:3306 \
-            -d mysql:5.7
-
       
       - name: Cache Maven and SonarCloud packages
         uses: actions/cache@v3
