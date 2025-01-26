@@ -48,6 +48,9 @@ class EmployeeControllerIT extends TestContainerCon {
 		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
 		departmentService.getAllDepartments()
 				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+
+		System.out.println("Employees after deletion: " + employeeService.getAllEmployees().size());
+		System.out.println("Departments after deletion: " + departmentService.getAllDepartments().size());
 	}
 
 	@Test

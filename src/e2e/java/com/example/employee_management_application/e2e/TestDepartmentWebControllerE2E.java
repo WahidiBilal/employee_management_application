@@ -10,10 +10,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import com.example.employee_management_application.conn.TestContainerCon;
+import com.example.employee_management_application.service.DepartmentService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestDepartmentWebControllerE2E extends TestContainerCon {
@@ -21,6 +23,9 @@ class TestDepartmentWebControllerE2E extends TestContainerCon {
 	private int port;
 
 	private WebDriver driver;
+
+	@Autowired
+	private DepartmentService departmentService;
 
 	@BeforeEach
 	public void setUp() {
@@ -34,6 +39,12 @@ class TestDepartmentWebControllerE2E extends TestContainerCon {
 		if (driver != null) {
 			driver.quit();
 		}
+
+		departmentService.getAllDepartments()
+				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+
+		// Log database state after deletion
+		System.out.println("Departments after deletion: " + departmentService.getAllDepartments().size());
 	}
 
 	@Test
