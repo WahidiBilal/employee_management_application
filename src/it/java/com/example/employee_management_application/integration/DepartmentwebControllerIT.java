@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.employee_management_application.conn.TestContainerCon;
 import com.example.employee_management_application.dto.DepartmentDTO;
+import com.example.employee_management_application.service.DepartmentService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DepartmentwebControllerIT extends TestContainerCon {
@@ -24,8 +26,21 @@ class DepartmentwebControllerIT extends TestContainerCon {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
+	@Autowired
+	private DepartmentService departmentService;
+
 	private String getBaseUrl() {
 		return "http://localhost:" + port + "/departments";
+	}
+
+	@AfterEach
+	public void cleanUp() {
+
+		departmentService.getAllDepartments()
+				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+
+		// Log database state after deletion
+		System.out.println("Departments after deletion: " + departmentService.getAllDepartments().size());
 	}
 
 	@Test

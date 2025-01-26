@@ -41,6 +41,10 @@ class DepartmentControllerIT extends TestContainerCon {
 
 		departmentService.getAllDepartments()
 				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+
+		// Log database state after deletion
+		System.out.println("Departments after deletion: " + departmentService.getAllDepartments().size());
+
 	}
 
 	@Test

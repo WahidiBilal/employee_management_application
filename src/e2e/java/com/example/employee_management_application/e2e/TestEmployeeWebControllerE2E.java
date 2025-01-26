@@ -19,9 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import com.example.employee_management_application.conn.TestContainerCon;
-import com.example.employee_management_application.dao.EmployeeRepository;
 import com.example.employee_management_application.dto.DepartmentDTO;
 import com.example.employee_management_application.service.DepartmentService;
+import com.example.employee_management_application.service.EmployeeService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestEmployeeWebControllerE2E extends TestContainerCon {
@@ -35,7 +35,7 @@ class TestEmployeeWebControllerE2E extends TestContainerCon {
 	private DepartmentService departmentService;
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
+	private EmployeeService employeeService;
 
 	@BeforeEach
 	public void setUp() {
@@ -53,10 +53,16 @@ class TestEmployeeWebControllerE2E extends TestContainerCon {
 			driver.quit();
 		}
 
-		employeeRepository.deleteAll();
+		deleteAllEmployeesAndDepartments();
+	}
 
-		// Log database state before checking emptiness
-		System.out.println("Remaining Employees: " + employeeRepository.findAll());
+	private void deleteAllEmployeesAndDepartments() {
+		employeeService.getAllEmployees().forEach(employee -> employeeService.deleteEmployee(employee.getEid()));
+		departmentService.getAllDepartments()
+				.forEach(department -> departmentService.deleteDepartment(department.getDid()));
+
+		System.out.println("Employees after deletion: " + employeeService.getAllEmployees().size());
+		System.out.println("Departments after deletion: " + departmentService.getAllDepartments().size());
 	}
 
 	@Test
